@@ -79,21 +79,6 @@ public class Controller {
     private ObservableList<String> currentlySelectedComics;
 
 
-    public void setSetting(String settingName, String value) {
-        try {
-            File f = new File("settings.ini");
-            if (!f.exists()) {
-                log("Creating settings file");
-                f.createNewFile();
-            }
-            Ini ini = new Ini(f);
-            ini.put("config", settingName, value);
-            ini.store();
-        } catch (IOException e) {
-
-        }
-    }
-
     public static void log(String log) {
         if (Main.out != null) {
             Main.out.println(log);
@@ -101,7 +86,7 @@ public class Controller {
         System.out.println(log);
     }
 
-    File comicDir;
+    private File comicDir;
 
     @FXML
     private Label currentComicDirLabel;
@@ -222,7 +207,7 @@ public class Controller {
         File file = fileChooser.showDialog(new Stage());
         if (file != null && file.isDirectory()) {
             comicDir = file;
-            setSetting("comicDir", file.getAbsolutePath());
+            configHelper.setSetting("comicDir", file.getAbsolutePath());
             currentComicDirLabel.setText("Comic Dir: " + file.getAbsolutePath());
         }
     }
@@ -233,7 +218,7 @@ public class Controller {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null && file.isDirectory()) {
             comicDir = file;
-            setSetting("comicDir", file.getAbsolutePath());
+            configHelper.setSetting("comicDir", file.getAbsolutePath());
             currentComicDirLabel.setText("Comic Dir: " + file.getAbsolutePath());
         }
     }
@@ -268,7 +253,7 @@ public class Controller {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             Main.databaseName = file.getName();
-            setSetting("database", file.getName());
+            configHelper.setSetting("database", file.getName());
             currentDatabaseLabel.setText(file.getName());
         }
 
