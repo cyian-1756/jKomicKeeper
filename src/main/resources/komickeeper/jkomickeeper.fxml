@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -8,6 +10,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="734.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="komickeeper.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="734.0" prefWidth="792.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="komickeeper.Controller">
   <children>
     <TabPane prefHeight="585.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
       <tabs>
@@ -23,7 +26,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="600.0">
               <children>
-                <GridPane hgap="15.0" layoutX="14.0" layoutY="19.0" prefHeight="665.0" prefWidth="769.0" vgap="0.0">
+                <GridPane fx:id="mainGridPane" hgap="15.0" prefHeight="698.0" prefWidth="769.0" vgap="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
                     <VBox prefHeight="667.0" prefWidth="423.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                       <children>
@@ -49,125 +52,121 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                        <ListView fx:id="comicListView" editable="false" onKeyPressed="#handleSelectedComicChange" onMouseClicked="#handleSelectedComicChange" prefHeight="626.0" prefWidth="509.0" />
+                        <ListView fx:id="comicListView" editable="false" onKeyPressed="#handleSelectedComicChange" onMouseClicked="#handleSelectedComicChange" prefHeight="626.0" prefWidth="509.0" VBox.vgrow="ALWAYS" />
                       </children>
                     </VBox>
-                    <VBox prefHeight="586.0" prefWidth="302.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                 <children>
-                                    <ScrollPane prefHeight="667.0" prefWidth="336.0">
-                                       <content>
-                                          <GridPane minHeight="78.0" prefHeight="653.0" prefWidth="302.0">
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-                                                   <children>
-                                                      <Label text="Path:" />
-                                                      <Label fx:id="comicPathLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="244.9998779296875" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                                   <children>
-                                                      <Label text="Name:" />
-                                                      <Label fx:id="comicNameLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                                                   <children>
-                                                      <Label text="Type:" />
-                                                      <Label fx:id="comicTypeLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="5">
-                                                   <children>
-                                                      <Label text="Tags:" />
-                                                      <Label fx:id="comicTagsLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                                                   <children>
-                                                      <Label text="Size:" />
-                                                      <Label fx:id="comicSizeLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="6">
-                                                   <children>
-                                                      <Label text="Rating:" />
-                                                      <Label fx:id="comicRatingLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <VBox alignment="CENTER" prefHeight="61.0" prefWidth="302.0" GridPane.columnIndex="0" GridPane.rowIndex="9">
-                                                   <children>
-                                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                                                         <children>
-                                                            <Button mnemonicParsing="false" onAction="#addTags" text="Add Tags" />
-                                                            <TextField fx:id="tagsTextField" prefWidth="189.0" />
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </VBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="10">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" onAction="#setRatingEvent" text="Set Rating" />
-                                                      <TextField id="comicSetRatingLabel" fx:id="comicSetRatingTextField" prefWidth="178.0" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="11">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" onAction="#setRatingEvent" text="Set Series" />
-                                                      <TextField id="comicSetRatingLabel" prefWidth="178.0" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0" GridPane.rowIndex="8">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" onAction="#openComicEvent" text="Open" />
-                                                      <Button mnemonicParsing="false" onAction="#openComicFolderEvent" text="Open Folder" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label text="Writer:" />
-                                                      <Label fx:id="comicWriterLabel" text="" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="12">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" onAction="#setWriterEvent" text="Set Writer" />
-                                                      <TextField id="comicSetRatingLabel" fx:id="comicSetWriterTextField" prefWidth="178.0" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="7">
-                                                   <children>
-                                                      <Label text="Date Indexed:" />
-                                                      <Label fx:id="comicDateIndexedLabel" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="250.0" minHeight="0.0" prefHeight="239.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                          </GridPane>
-                                       </content>
-                                    </ScrollPane>
-                                 </children>
+                    <VBox prefHeight="586.0" prefWidth="302.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS">
+                      <children>
+                        <GridPane gridLinesVisible="false" minHeight="78.0" prefHeight="698.0" prefWidth="330.0" visible="true">
+                          <children>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                              <children>
+                                <Label text="Path:" />
+                                <Label fx:id="comicPathLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="-1.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                              <children>
+                                <Label text="Name:" />
+                                <Label fx:id="comicNameLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                              <children>
+                                <Label text="Type:" />
+                                <Label fx:id="comicTypeLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                              <children>
+                                <Label text="Tags:" />
+                                <Label fx:id="comicTagsLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                              <children>
+                                <Label text="Size:" />
+                                <Label fx:id="comicSizeLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                              <children>
+                                <Label text="Rating:" />
+                                <Label fx:id="comicRatingLabel" text="" />
+                              </children>
+                            </HBox>
+                            <VBox alignment="CENTER" prefHeight="61.0" prefWidth="302.0" GridPane.columnIndex="0" GridPane.rowIndex="9">
+                              <children>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                  <children>
+                                    <Button mnemonicParsing="false" onAction="#addTags" text="Add Tags" />
+                                    <TextField fx:id="tagsTextField" prefWidth="189.0" />
+                                  </children>
+                                </HBox>
+                              </children>
+                            </VBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="10">
+                              <children>
+                                <Button mnemonicParsing="false" onAction="#setRatingEvent" text="Set Rating" />
+                                <TextField id="comicSetRatingLabel" fx:id="comicSetRatingTextField" prefWidth="178.0" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="11">
+                              <children>
+                                <Button mnemonicParsing="false" onAction="#setRatingEvent" text="Set Series" />
+                                <TextField id="comicSetRatingLabel" prefWidth="178.0" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0" GridPane.rowIndex="8">
+                              <children>
+                                <Button mnemonicParsing="false" onAction="#openComicEvent" text="Open" />
+                                <Button mnemonicParsing="false" onAction="#openComicFolderEvent" text="Open Folder" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                              <children>
+                                <Label text="Writer:" />
+                                <Label fx:id="comicWriterLabel" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="12">
+                              <children>
+                                <Button mnemonicParsing="false" onAction="#setWriterEvent" text="Set Writer" />
+                                <TextField id="comicSetRatingLabel" fx:id="comicSetWriterTextField" prefWidth="178.0" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="7">
+                              <children>
+                                <Label text="Date Indexed:" />
+                                <Label fx:id="comicDateIndexedLabel" />
+                              </children>
+                            </HBox>
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints fillWidth="true" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="250.0" minHeight="0.0" prefHeight="239.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
                     </VBox>
                   </children>
                   <columnConstraints>
-                    <ColumnConstraints hgrow="ALWAYS" maxWidth="520.0" minWidth="10.0" prefWidth="426.0" />
-                    <ColumnConstraints hgrow="ALWAYS" maxWidth="6666.0" minWidth="10.0" prefWidth="309.0" />
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="-1.0" minWidth="10.0" prefWidth="426.0" />
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="-1.0" minWidth="10.0" prefWidth="309.0" />
                   </columnConstraints>
                   <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -181,17 +180,17 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <GridPane layoutX="8.0" layoutY="-14.0" prefHeight="549.0" prefWidth="600.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="-14.0">
+                <GridPane prefHeight="549.0" prefWidth="600.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="-14.0">
                   <children>
                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                       <children>
                         <GridPane prefHeight="278.0" prefWidth="791.0">
                           <children>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
-                                             <children>
-                                    <Button mnemonicParsing="false" onAction="#getComicPageNumbers" text="Get page numbers" />
-                                             </children>
-                                          </HBox>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                              <children>
+                                <Button mnemonicParsing="false" onAction="#getComicPageNumbers" text="Get page numbers" />
+                              </children>
+                            </HBox>
                             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                               <children>
                                 <Label text="Comic Dir: " />
@@ -243,11 +242,11 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               </rowConstraints>
                             </GridPane>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                             <children>
-                                                <Button mnemonicParsing="false" text="Get file hashes" />
-                                             </children>
-                                          </HBox>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <children>
+                                <Button mnemonicParsing="false" text="Get file hashes" />
+                              </children>
+                            </HBox>
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -257,8 +256,8 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
                       </children>

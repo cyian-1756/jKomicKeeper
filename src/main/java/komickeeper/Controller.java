@@ -11,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -250,6 +251,9 @@ public class Controller {
     @FXML
     public void selectDatabase(Event e) {
         final FileChooser fileChooser = new FileChooser();
+        if (new File(configHelper.getDatabaseDir()).canRead()) {
+            fileChooser.setInitialDirectory(new File(configHelper.getDatabaseDir()));
+        }
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             Main.databaseName = file.getName();

@@ -1,6 +1,5 @@
 package komickeeper;
 
-import com.sun.istack.internal.NotNull;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,7 +19,6 @@ public class dbHelper {
 
 
 
-    @NotNull
     public static String getComicType(File file) {
         String fileName = file.getName();
         if (fileName.endsWith("cbz")) {
@@ -44,7 +42,6 @@ public class dbHelper {
             while ( res.next() ) {
                 usernames.add(res.getString(1));
             }
-            Controller.log(usernames.toString());
             return usernames;
         } catch(SQLException e) {
             System.err.println("Unable to get all comics from database");
@@ -311,6 +308,7 @@ public class dbHelper {
             prep.executeBatch();
             connection.commit();
             connection.close();
+            Controller.log("Done writing comics");
         }
         catch(SQLException e) {
             System.err.println("Unable to write comics to database " + configHelper.getDatabasePath());

@@ -17,7 +17,6 @@ public class Main extends Application {
     public static String databaseName;
     public static PrintWriter out;
 
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("jkomickeeper.fxml"));
