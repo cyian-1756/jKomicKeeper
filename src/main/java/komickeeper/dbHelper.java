@@ -77,23 +77,6 @@ public class dbHelper {
 
     }
 
-    private static String comicsSQL = "CREATE TABLE comics (\n" +
-            "  id  INTEGER PRIMARY KEY,\n" +
-            "  name TEXT NOT NULL,\n" +
-            "  path TEXT NOT NULL UNIQUE,\n" +
-            "  folder_path TEXT NOT NULL,\n" +
-            "  type TEXT NOT NULL,\n" +
-            "  size INT NOT NULL,\n" +
-            "  tags TEXT,\n" +
-            "  publisher TEXT,\n" +
-            "  rating INT,\n" +
-            "  writer TEXT,\n" +
-            "  release_date TEXT,\n" +
-            "  series_name TEXT,\n" +
-            "  total_pages INT,\n" +
-            "  hash TEXT,\n" +
-            "  date_indexed LONG\n" +
-            ");";
     private static final int sqliteName = 2;
     private static final int sqlitePath = 3;
     private static final int sqliteFolderPath = 4;
@@ -252,6 +235,24 @@ public class dbHelper {
 
     public static void makeDBIfNotExist(String dbName) {
         if (!dbExists(dbName)) {
+            String comicsSQL = "CREATE TABLE comics (\n" +
+                    "  id  INTEGER PRIMARY KEY,\n" +
+                    "  name TEXT NOT NULL,\n" +
+                    "  path TEXT NOT NULL,\n" +
+                    "  folder_path TEXT NOT NULL,\n" +
+                    "  type TEXT NOT NULL,\n" +
+                    "  size INT NOT NULL,\n" +
+                    "  tags TEXT,\n" +
+                    "  publisher TEXT,\n" +
+                    "  rating INT,\n" +
+                    "  writer TEXT,\n" +
+                    "  release_date TEXT,\n" +
+                    "  series_name TEXT,\n" +
+                    "  total_pages INT,\n" +
+                    "  hash TEXT,\n" +
+                    "  date_indexed LONG,\n" +
+                    "  unique (path, name)\n" +
+                    ");";
             createNewDatabase(dbName, comicsSQL);
         }
     }
