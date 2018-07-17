@@ -1,5 +1,6 @@
 package komickeeper;
 
+import com.google.common.collect.Multimap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class dbHelper {
 
@@ -143,9 +145,9 @@ public class dbHelper {
             PreparedStatement prep = connection.prepareStatement("UPDATE comics SET tags = ? WHERE name = ?");
             if (tags == null) {
                 Controller.log("tags is null");
-                prep.setString(1, tag);
+                prep.setString(1, tag + ",");
             } else {
-                prep.setString(1, tags + "," + tag);
+                prep.setString(1, tags + tag + ",");
             }
             prep.setString(2, comicName);
             prep.executeUpdate();
@@ -184,20 +186,49 @@ public class dbHelper {
         }
     }
 
-    public static ObservableList<String> searchComics(String searchTerm, Boolean searchTags) {
+    public static String buildTagSearch(String col, List<String> tags) {
+        StringBuilder toReturn = new StringBuilder();
+        for (int i = 0; i != tags.size(); i++) {
+            String tag = tags.get(i);
+            toReturn.append(String.format("instr(UPPER(%s), UPPER(\"%s,\"))>0 ", col, tag.toUpperCase()));
+            if (i != tags.size() -1) {
+                toReturn.append("AND ");
+            }
+        }
+        return toReturn.toString();
+    }
+    private static List<String> searchToArrayList(String key, Multimap<String, String> searchMap) {
+        return new ArrayList<String>(searchMap.get(key));
+    }
+
+    public static ObservableList<String> searchComics(String rawSearch) {
         ObservableList<String> comics = FXCollections.observableArrayList();
+        // Get any search tags from the rawSearch
+        Multimap<String, String> parsedSearch = searchHelper.parseSearch(rawSearch);
+        // Get the search term from the raw search
+        String searchTerm = searchHelper.getSearchString(rawSearch);
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
             PreparedStatement prep;
-            if (searchTags) {
-                prep = connection.prepareStatement("SELECT * FROM comics WHERE instr(UPPER(tags), UPPER(?))>0 ORDER BY name");
+            if (!parsedSearch.isEmpty()) {
+                String sqlQ = "SELECT * FROM comics WHERE ";
+                if (!searchTerm.isEmpty()) {
+                    sqlQ+= "instr(UPPER(name), UPPER(?))>0 AND ";
+                }
+                Controller.log(sqlQ + buildTagSearch("tags", searchToArrayList("tag", parsedSearch)));
+                prep = connection.prepareStatement(sqlQ + buildTagSearch("tags", searchToArrayList("tag", parsedSearch)));
             } else {
+                Controller.log("Tagless search");
                 prep = connection.prepareStatement("SELECT * FROM comics WHERE instr(UPPER(name), UPPER(?))>0 ORDER BY name");
             }
-            prep.setString(1, searchTerm);
+            // Only set the searchTerm if the user isn't searching solely tags
+            if (!searchTerm.isEmpty()) {
+                Controller.log("Binding search term");
+                prep.setString(1, searchTerm);
+            }
             ResultSet res = prep.executeQuery();
             while ( res.next() ) {
-                comics.add(res.getString(2));
+                comics.add(res.getString(sqliteName));
             }
             return comics;
         } catch(SQLException e) {

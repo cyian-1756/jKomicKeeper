@@ -49,6 +49,14 @@ public class dbHelperTests {
 
     }
 
+//    @Test
+//    public void testBuildTagSearch() {
+//        String[] tags = {"deadpool", "annual"};
+//        String f = dbHelper.buildTagSearch("tags", tags);
+//        System.out.println(f);
+//        assert(f.equals("instr(UPPER(tags), UPPER(\"test\"))>0 AND instr(UPPER(tags), UPPER(\"test2\"))>0 AND instr(UPPER(tags), UPPER(\"test3\"))>0"));
+//    }
+
     @AfterClass
     public static void deleteTestDB() {
         new File("./dbs/test").delete();

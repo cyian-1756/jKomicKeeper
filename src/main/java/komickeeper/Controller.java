@@ -158,7 +158,7 @@ public class Controller {
     @FXML
     protected void comicSearchEvent(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {
-            updateComicList(dbHelper.searchComics(searchBox.getText(), searchTagsCheckBox.isSelected()));
+            updateComicList(dbHelper.searchComics(searchBox.getText()));
         }
     }
 
