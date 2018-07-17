@@ -3,7 +3,6 @@ import komickeeper.Main;
 import komickeeper.dbHelper;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
