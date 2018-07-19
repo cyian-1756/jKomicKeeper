@@ -139,14 +139,20 @@ public class dbHelper {
     public static void setTag(String comicName, String tag) {
         try {
             String tags = null;
-            Controller.log("Setting tags");
+            Controller.log("Setting tags for " + comicName);
             tags = getComicDetails(comicName).get("tags");
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
             PreparedStatement prep = connection.prepareStatement("UPDATE comics SET tags = ? WHERE name = ?");
             if (tags == null) {
-                Controller.log("tags is null");
                 prep.setString(1, tag + ",");
             } else {
+                for (String t : tags.split(",")) {
+                    if (t.equals(tag)) {
+                        // Make sure the tag being added isn't a dupe
+                        Controller.log(String.format("%s already has tag \"%s\"", comicName, tag));
+                        return;
+                    }
+                }
                 prep.setString(1, tags + tag + ",");
             }
             prep.setString(2, comicName);
@@ -217,9 +223,11 @@ public class dbHelper {
                 }
                 Controller.log(sqlQ + buildTagSearch("tags", searchToArrayList("tag", parsedSearch)));
                 prep = connection.prepareStatement(sqlQ + buildTagSearch("tags", searchToArrayList("tag", parsedSearch)));
-            } else {
+            } else if (parsedSearch.isEmpty() && !searchTerm.isEmpty()) {
                 Controller.log("Tagless search");
                 prep = connection.prepareStatement("SELECT * FROM comics WHERE instr(UPPER(name), UPPER(?))>0 ORDER BY name");
+            } else {
+                prep = connection.prepareStatement("SELECT * FROM comics ORDER BY name");
             }
             // Only set the searchTerm if the user isn't searching solely tags
             if (!searchTerm.isEmpty()) {
