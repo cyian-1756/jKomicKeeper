@@ -190,11 +190,14 @@ public class Controller {
         comicRatingLabel.setText(comicInfo.get("rating"));
         comicWriterLabel.setText(comicInfo.get("writer"));
         comicDateIndexedLabel.setText(comicInfo.get("date_indexed"));
-        String tags = comicInfo.get("tags");
-        if (tags != null) {
-            tags = tags.replaceAll(",", ", ");
+        // Sort the tags alphabetically
+        String[] tags = comicInfo.get("tags").split(",");
+        Arrays.sort(tags);
+        StringBuilder tagsToShow = new StringBuilder();
+        for (String tag : tags) {
+            tagsToShow.append(tag).append(", ");
         }
-        comicTagsLabel.setText(tags);
+        comicTagsLabel.setText(tagsToShow.toString());
         // Clear our metadata fields
         tagsTextField.clear();
         comicSetRatingTextField.clear();
@@ -266,7 +269,7 @@ public class Controller {
     @FXML
     public void makeNewDatabase(Event e) {
         String dbName = databaseNameTextfield.getText();
-        if (dbName != null && dbName != "") {
+        if (dbName != null && !dbName.equals("")) {
             dbHelper.makeDBIfNotExist(dbName + ".sqlite");
         }
 
