@@ -16,6 +16,12 @@ To index comics click the settings tab, click "Select comic dir", select the dir
 contains the comics you want to index and finally click the index button. The indexing may
 take a few seconds.
 
-### Chaning the current database
+### Changing the current database
 To change the current database click the settings tab, click "Select database" and then selected
 the desired database.
+
+### Searching tags
+To search for a tag enter "tag:TAG_VALUE" into the search bar and press enter
+
+### Screenshot
+![screenshot](media/screenshot.png)
