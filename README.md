@@ -1,6 +1,6 @@
 # jkomickeeper
 
-A comic book manager for Linux
+A comic book manager for Linux, written in Java and using JavaFX for the GUI
 
 ## Building
 To build run `mvn clean compile assembly:single`
