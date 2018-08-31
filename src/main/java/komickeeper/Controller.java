@@ -179,6 +179,7 @@ public class Controller {
 
     @FXML
     public void handleSelectedComicChange(Event arg0) {
+        comicTagsLabel.setText("");
         String comicName = comicListView.getSelectionModel().getSelectedItem();
         currentlySelectedComics = comicListView.getSelectionModel().getSelectedItems();
         comicNameLabel.setText(comicName);
@@ -190,14 +191,16 @@ public class Controller {
         comicRatingLabel.setText(comicInfo.get("rating"));
         comicWriterLabel.setText(comicInfo.get("writer"));
         comicDateIndexedLabel.setText(comicInfo.get("date_indexed"));
-        // Sort the tags alphabetically
-        String[] tags = comicInfo.get("tags").split(",");
-        Arrays.sort(tags);
-        StringBuilder tagsToShow = new StringBuilder();
-        for (String tag : tags) {
-            tagsToShow.append(tag).append(", ");
+        if (comicInfo.get("tags") != null) {
+            // Sort the tags alphabetically
+            String[] tags = comicInfo.get("tags").split(",");
+            Arrays.sort(tags);
+            StringBuilder tagsToShow = new StringBuilder();
+            for (String tag : tags) {
+                tagsToShow.append(tag).append(", ");
+            }
+            comicTagsLabel.setText(tagsToShow.toString());
         }
-        comicTagsLabel.setText(tagsToShow.toString());
         // Clear our metadata fields
         tagsTextField.clear();
         comicSetRatingTextField.clear();
