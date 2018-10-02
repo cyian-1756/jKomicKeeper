@@ -34,15 +34,15 @@ public class dbHelper {
         }
     }
 
-    public static ObservableList<String> getAllComicNames() {
+    public static ObservableList<Comic> getAllComicNames() {
         makeDBIfNotExist(Main.databaseName);
-        ObservableList<String> usernames = FXCollections.observableArrayList();
+        ObservableList<Comic> usernames = FXCollections.observableArrayList();
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
             Statement statement = connection.createStatement();
-            ResultSet res = statement.executeQuery("SELECT name FROM comics ORDER BY name");
+            ResultSet res = statement.executeQuery("SELECT name,path FROM comics ORDER BY name");
             while ( res.next() ) {
-                usernames.add(res.getString(1));
+                usernames.add(new Comic(res.getString(1), res.getString(2)));
             }
             return usernames;
         } catch(SQLException e) {
@@ -136,26 +136,26 @@ public class dbHelper {
         }
     }
 
-    public static void setTag(String comicName, String tag) {
+    public static void setTag(String comicPath, String tag) {
         try {
             String tags = null;
-            Controller.log("Setting tags for " + comicName);
-            tags = getComicDetails(comicName).get("tags");
+            Controller.log("Setting tags for " + comicPath);
+            tags = getComicDetails(comicPath).get("tags");
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
-            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET tags = ? WHERE name = ?");
+            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET tags = ? WHERE path = ?");
             if (tags == null) {
                 prep.setString(1, tag + ",");
             } else {
                 for (String t : tags.split(",")) {
                     if (t.equals(tag)) {
                         // Make sure the tag being added isn't a dupe
-                        Controller.log(String.format("%s already has tag \"%s\"", comicName, tag));
+                        Controller.log(String.format("%s already has tag \"%s\"", comicPath, tag));
                         return;
                     }
                 }
                 prep.setString(1, tags + tag + ",");
             }
-            prep.setString(2, comicName);
+            prep.setString(2, comicPath);
             prep.executeUpdate();
 
         } catch(SQLException e) {
@@ -164,13 +164,13 @@ public class dbHelper {
         }
     }
 
-    public static void setRating(String comicName, String rating) {
+    public static void setRating(String comicPath, String rating) {
         try {
             Controller.log("Setting rating to \"" + rating + "\"");
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
-            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET rating = ? WHERE name = ?");
+            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET rating = ? WHERE path = ?");
             prep.setString(1, rating);
-            prep.setString(2, comicName);
+            prep.setString(2, comicPath);
             prep.executeUpdate();
         } catch(SQLException e) {
             System.err.println("Unable to set rating");
@@ -178,13 +178,13 @@ public class dbHelper {
         }
     }
 
-    public static void setWriter(String comicName, String writer) {
+    public static void setWriter(String comicPath, String writer) {
         try {
             Controller.log("Setting writer to \"" + writer + "\"");
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
-            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET writer = ? WHERE name = ?");
+            PreparedStatement prep = connection.prepareStatement("UPDATE comics SET writer = ? WHERE path = ?");
             prep.setString(1, writer);
-            prep.setString(2, comicName);
+            prep.setString(2, comicPath);
             prep.executeUpdate();
         } catch(SQLException e) {
             System.err.println("Unable to set writer");
@@ -207,8 +207,8 @@ public class dbHelper {
         return new ArrayList<String>(searchMap.get(key));
     }
 
-    public static ObservableList<String> searchComics(String rawSearch) {
-        ObservableList<String> comics = FXCollections.observableArrayList();
+    public static ObservableList<Comic> searchComics(String rawSearch) {
+        ObservableList<Comic> comics = FXCollections.observableArrayList();
         // Get any search tags from the rawSearch
         Multimap<String, String> parsedSearch = searchHelper.parseSearch(rawSearch);
         // Get the search term from the raw search
@@ -236,7 +236,7 @@ public class dbHelper {
             }
             ResultSet res = prep.executeQuery();
             while ( res.next() ) {
-                comics.add(res.getString(sqliteName));
+                comics.add(new Comic(res.getString(sqliteName), res.getString(sqlitePath)));
             }
             return comics;
         } catch(SQLException e) {
@@ -246,12 +246,12 @@ public class dbHelper {
         }
     }
 
-    public static Map<String, String> getComicDetails(String comicName) {
+    public static Map<String, String> getComicDetails(String comicPath) {
         Map<String, String> comic = new HashMap<>();
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
-            PreparedStatement prep = connection.prepareStatement("SELECT * FROM comics WHERE name = ?");
-            prep.setString(1, comicName);
+            PreparedStatement prep = connection.prepareStatement("SELECT * FROM comics WHERE path = ?");
+            prep.setString(1, comicPath);
             ResultSet res = prep.executeQuery();
             while ( res.next() ) {
                 comic.put("name", res.getString("name"));
@@ -266,7 +266,7 @@ public class dbHelper {
             }
             return comic;
         } catch(SQLException e) {
-            System.err.println("Unable to comic details for " + comicName);
+            System.err.println("Unable to comic details for " + comicPath);
             System.err.println(e.getMessage());
             return null;
         }

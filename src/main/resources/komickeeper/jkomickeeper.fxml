@@ -116,10 +116,11 @@
                                 <TextField id="comicSetRatingLabel" prefWidth="178.0" />
                               </children>
                             </HBox>
-                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0" GridPane.rowIndex="8">
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="8">
                               <children>
                                 <Button mnemonicParsing="false" onAction="#openComicEvent" text="Open" />
                                 <Button mnemonicParsing="false" onAction="#openComicFolderEvent" text="Open Folder" />
+                                <Button mnemonicParsing="false" onAction="#deleteComicEvent" text="Delete" />
                               </children>
                             </HBox>
                             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
