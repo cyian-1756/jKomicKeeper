@@ -257,8 +257,15 @@ public class Controller {
 
     @FXML
     public void deleteComicEvent(Event e) {
-        String comicToDelete = comicListView.getSelectionModel().getSelectedItem().getPath();
-        log(comicToDelete);
+        Comic comicToDelete = comicListView.getSelectionModel().getSelectedItem();
+        File comicFileToDelete = new File(comicToDelete.getPath());
+        if (comicFileToDelete.exists()) {
+            comicFileToDelete.delete();
+        } else {
+            log("Cannot delete comic at " + comicToDelete.getPath() + " as it does not exist!");
+        }
+        dbHelper.removeComicFromDB(comicToDelete.getPath());
+        populateComicList();
     }
 
     @FXML

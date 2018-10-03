@@ -272,6 +272,19 @@ public class dbHelper {
         }
     }
 
+    public static void removeComicFromDB(String comicPath) {
+         try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + configHelper.getDatabasePath());
+            PreparedStatement prep = connection.prepareStatement("DELETE FROM comics WHERE path = ?");
+            prep.setString(1, comicPath);
+            prep.executeUpdate();
+
+        } catch(SQLException e) {
+            System.err.println("Unable to delete comic " + comicPath);
+            System.err.println(e.getMessage());
+        }
+    }
+
     public static void makeDBIfNotExist(String dbName) {
         if (!dbExists(dbName)) {
             String comicsSQL = "CREATE TABLE comics (\n" +
