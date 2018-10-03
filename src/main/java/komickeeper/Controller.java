@@ -20,14 +20,13 @@ import org.ini4j.Ini;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 import java.util.List;
 import java.util.zip.ZipFile;
 
 public class Controller {
     @FXML
-    public ListView<String> comicListView;
+    public ListView<Comic> comicListView;
 
     @FXML
     private TextArea comicSearchTextField;
@@ -77,7 +76,7 @@ public class Controller {
     @FXML
     private Label comicDateIndexedLabel;
 
-    private ObservableList<String> currentlySelectedComics;
+    private ObservableList<Comic> currentlySelectedComics;
 
 
     public static void log(String log) {
@@ -125,7 +124,7 @@ public class Controller {
     }
 
     @FXML
-    public void updateComicList(ObservableList<String> l) {
+    public void updateComicList(ObservableList<Comic> l) {
         comicListView.setItems(l);
     }
 
@@ -164,12 +163,12 @@ public class Controller {
 
     @FXML
     protected void addTags(Event e) {
-        for (String comicName : currentlySelectedComics) {
+        for (Comic comicToTag : currentlySelectedComics) {
             String tagsToAdd = tagsTextField.getText();
-            if (comicName != null && tagsToAdd != null) {
+            if (comicToTag.getName() != null && tagsToAdd != null) {
                 for (String tag : tagsToAdd.split(",")) {
                     tag = tag.trim();
-                    dbHelper.setTag(comicName, tag);
+                    dbHelper.setTag(comicToTag.getPath(), tag);
                 }
             } else {
                 log("Either comicName or tagsToAdd is null");
@@ -180,10 +179,12 @@ public class Controller {
     @FXML
     public void handleSelectedComicChange(Event arg0) {
         comicTagsLabel.setText("");
-        String comicName = comicListView.getSelectionModel().getSelectedItem();
+        Comic selectedComic = comicListView.getSelectionModel().getSelectedItem();
+        String comicName = selectedComic.getName();
+        String comicPath = selectedComic.getPath();
         currentlySelectedComics = comicListView.getSelectionModel().getSelectedItems();
         comicNameLabel.setText(comicName);
-        Map<String, String> comicInfo = dbHelper.getComicDetails(comicName);
+        Map<String, String> comicInfo = dbHelper.getComicDetails(comicPath);
         int size = Integer.parseInt(comicInfo.get("size")) / 1000 / 1000;
         comicPathLabel.setText(comicInfo.get("path"));
         comicTypeLabel.setText(comicInfo.get("type"));
@@ -246,12 +247,25 @@ public class Controller {
 
     @FXML
     public void openComicEvent(Event e) {
-        openComic(comicListView.getSelectionModel().getSelectedItem());
+        openComic(comicListView.getSelectionModel().getSelectedItem().getPath());
     }
 
     @FXML
     public void openComicFolderEvent(Event e) {
-        openComicFolder(comicListView.getSelectionModel().getSelectedItem());
+        openComicFolder(comicListView.getSelectionModel().getSelectedItem().getPath());
+    }
+
+    @FXML
+    public void deleteComicEvent(Event e) {
+        Comic comicToDelete = comicListView.getSelectionModel().getSelectedItem();
+        File comicFileToDelete = new File(comicToDelete.getPath());
+        if (comicFileToDelete.exists()) {
+            comicFileToDelete.delete();
+        } else {
+            log("Cannot delete comic at " + comicToDelete.getPath() + " as it does not exist!");
+        }
+        dbHelper.removeComicFromDB(comicToDelete.getPath());
+        populateComicList();
     }
 
     @FXML
@@ -291,15 +305,15 @@ public class Controller {
 
     @FXML
     public void setRatingEvent(Event e) {
-        for (String comicName : currentlySelectedComics) {
-            dbHelper.setRating(comicName, comicSetRatingTextField.getText());
+        for (Comic comicToRate : currentlySelectedComics) {
+            dbHelper.setRating(comicToRate.path, comicSetRatingTextField.getText());
         }
     }
 
     @FXML
     public void setWriterEvent(Event e) {
-        for (String comicName : currentlySelectedComics) {
-            dbHelper.setWriter(comicName, comicSetWriterTextField.getText());
+        for (Comic comicToSetWriter : currentlySelectedComics) {
+            dbHelper.setWriter(comicToSetWriter.path, comicSetWriterTextField.getText());
         }
     }
 
